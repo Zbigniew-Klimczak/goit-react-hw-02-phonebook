@@ -1,6 +1,7 @@
 import { Component } from 'react';
-
+import Filter from './Filter';
 import ContactForm from './ContactForm';
+import ContactList from './ContactList';
 export class App extends Component {
   constructor() {
     super();
@@ -15,9 +16,8 @@ export class App extends Component {
       filter: '',
     };
   }
-  handleChange = evt => {
-    const { name } = evt.currentTarget;
-    this.setState({ [name]: evt.currentTarget.value.trim() });
+  handleFilterChange = evt => {
+    this.setState({ filter: evt.currentTarget.value.trim() });
   };
 
   handleFilter = () => {
@@ -34,31 +34,20 @@ export class App extends Component {
     }));
   };
   render() {
-    const { filter } = this.state;
+    const { filter, contacts } = this.state;
     return (
       <>
         <h1>Phonebook</h1>
         <ContactForm
+          contacts={contacts}
           handleContactsChange={this.handleContactsChange}
         ></ContactForm>
         <h2>Contacts</h2>
-        <label>
-          Find contacts by name
-          <input
-            type="text"
-            name="filter"
-            placeholder="Enter name"
-            value={filter}
-            onChange={this.handleChange}
-          />
-        </label>
-        <ul>
-          {this.handleFilter().map(contact => (
-            <li key={contact.id}>
-              {contact.name}: {contact.number}
-            </li>
-          ))}
-        </ul>
+        <Filter
+          filterValue={filter}
+          onChange={this.handleFilterChange}
+        ></Filter>
+        <ContactList handleFilter={this.handleFilter}></ContactList>
       </>
     );
   }

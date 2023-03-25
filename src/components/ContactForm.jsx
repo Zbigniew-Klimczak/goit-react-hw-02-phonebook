@@ -11,15 +11,29 @@ class ContactForm extends Component {
 
   handleChange = evt => {
     const { name } = evt.currentTarget;
-    this.setState({ [name]: evt.currentTarget.value.trim() });
+    this.setState({ [name]: evt.currentTarget.value });
   };
   handleSubmit = evt => {
     const { name, number } = this.state;
+    const { handleContactsChange, contacts } = this.props;
     evt.preventDefault();
     const form = evt.currentTarget;
     const id = nanoid();
-    this.props.handleContactsChange({ name: name, number: number, id: id });
-    form.reset();
+
+    if (
+      contacts.filter(
+        contact => contact.name.toLowerCase() === name.toLowerCase()
+      ).length > 0
+    ) {
+      alert('is already in contacts');
+    } else {
+      handleContactsChange({
+        name: name.trim(),
+        number: number.trim(),
+        id: id,
+      });
+      form.reset();
+    }
   };
   render() {
     const { name, number } = this.state;
