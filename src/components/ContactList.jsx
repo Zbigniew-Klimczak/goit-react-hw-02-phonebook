@@ -1,5 +1,6 @@
 import Contact from './Contact';
-const ContactList = ({ handleFilter }) => (
+import PropTypes from 'prop-types';
+const ContactList = ({ handleFilter, deleteContact }) => (
   <ul>
     {handleFilter().map(contact => (
       <Contact
@@ -7,8 +8,14 @@ const ContactList = ({ handleFilter }) => (
         id={contact.id}
         name={contact.name}
         number={contact.number}
+        contact={contact}
+        deleteContact={deleteContact}
       ></Contact>
     ))}
   </ul>
 );
+ContactList.propTypes = {
+  handleFilter: PropTypes.func,
+  deleteContact: PropTypes.func,
+};
 export default ContactList;

@@ -1,5 +1,7 @@
 import { Component } from 'react';
 import { nanoid } from 'nanoid';
+import Notiflix from 'notiflix';
+import PropTypes from 'prop-types';
 class ContactForm extends Component {
   constructor(props) {
     super(props);
@@ -19,13 +21,12 @@ class ContactForm extends Component {
     evt.preventDefault();
     const form = evt.currentTarget;
     const id = nanoid();
-
     if (
       contacts.filter(
         contact => contact.name.toLowerCase() === name.toLowerCase()
       ).length > 0
     ) {
-      alert('is already in contacts');
+      Notiflix.Notify.warning(`${name} is already in contacts`);
     } else {
       handleContactsChange({
         name: name.trim(),
@@ -72,4 +73,8 @@ class ContactForm extends Component {
     );
   }
 }
+ContactForm.propTypes = {
+  contacts: PropTypes.arrayOf(PropTypes.object),
+  handleContactsChange: PropTypes.func,
+};
 export default ContactForm;
