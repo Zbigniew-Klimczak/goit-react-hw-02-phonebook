@@ -1,12 +1,26 @@
 import { Component } from 'react';
+import { nanoid } from 'nanoid';
 class ContactForm extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       name: '',
       number: '',
     };
   }
+
+  handleChange = evt => {
+    const { name } = evt.currentTarget;
+    this.setState({ [name]: evt.currentTarget.value.trim() });
+  };
+  handleSubmit = evt => {
+    const { name, number } = this.state;
+    evt.preventDefault();
+    const form = evt.currentTarget;
+    const id = nanoid();
+    this.props.handleContactsChange({ name: name, number: number, id: id });
+    form.reset();
+  };
   render() {
     const { name, number } = this.state;
     return (
