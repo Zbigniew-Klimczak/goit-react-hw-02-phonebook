@@ -2,6 +2,7 @@ import { Component } from 'react';
 import { nanoid } from 'nanoid';
 import Notiflix from 'notiflix';
 import PropTypes from 'prop-types';
+import css from './ContactForm.module.css';
 class ContactForm extends Component {
   constructor(props) {
     super(props);
@@ -17,7 +18,7 @@ class ContactForm extends Component {
   };
   handleSubmit = evt => {
     const { name, number } = this.state;
-    const { handleContactsChange, contacts } = this.props;
+    const { addContact, contacts } = this.props;
     evt.preventDefault();
     const form = evt.currentTarget;
     const id = nanoid();
@@ -28,7 +29,7 @@ class ContactForm extends Component {
     ) {
       Notiflix.Notify.warning(`${name} is already in contacts`);
     } else {
-      handleContactsChange({
+      addContact({
         name: name.trim(),
         number: number.trim(),
         id: id,
@@ -40,10 +41,11 @@ class ContactForm extends Component {
     const { name, number } = this.state;
     return (
       <>
-        <form onSubmit={this.handleSubmit}>
-          <label>
-            Name
+        <form className={css.form} onSubmit={this.handleSubmit}>
+          <label className={css.formLabel}>
+            Name:
             <input
+              className={css.formInput}
               type="text"
               name="name"
               placeholder="Enter name"
@@ -54,9 +56,10 @@ class ContactForm extends Component {
               required
             />
           </label>
-          <label>
-            Number
+          <label className={css.formLabel}>
+            Number:
             <input
+              className={css.formInput}
               type="tel"
               name="number"
               placeholder="Enter number"
@@ -67,14 +70,16 @@ class ContactForm extends Component {
               required
             />
           </label>
-          <button type="submit">Add contact</button>
+          <button className={css.formButton} type="submit">
+            Add contact
+          </button>
         </form>
       </>
     );
   }
 }
 ContactForm.propTypes = {
-  contacts: PropTypes.arrayOf(PropTypes.object),
-  handleContactsChange: PropTypes.func,
+  contacts: PropTypes.arrayOf(PropTypes.object).isRequired,
+  addContact: PropTypes.func.isRequired,
 };
 export default ContactForm;
